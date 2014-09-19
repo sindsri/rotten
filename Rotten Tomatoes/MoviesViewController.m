@@ -18,9 +18,8 @@
 
 @end
 
-@implementation MoviesViewController{
-    //UIRefreshControl*_refreshControl;
-}
+@implementation MoviesViewController
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,12 +41,17 @@
     
     
     //IntialRefresh
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refresh"];
-    [refreshControl addTarget:self action:@selector(refresh:)forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refresh"];
     [self.tableView addSubview:self.refreshControl];
-    
+    [self.refreshControl addTarget:self action:@selector(movieDataReload)forControlEvents:UIControlEventValueChanged];
+
     [self.tableView registerNib:[UINib nibWithNibName:@"MovieCell" bundle:nil] forCellReuseIdentifier:@"MovieCell"];
+    [self movieDataReload];
+    NSLog(@"finished with View did Load");
+}
+
+-(void)movieDataReload {
     
     NSString *url = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=dagqdghwaq3e3mxyrp7kmmj5&limit=20&country=us";
     
@@ -59,14 +63,14 @@
             NSDictionary *object = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             self.movies = object[@"movies"];
             [self.tableView reloadData];
+            [self.refreshControl endRefreshing];
             //NSLog(@"movies: %@", self.movies);
-
+            
         } else {
             //display an error alert
         }
         
     }];
-    NSLog(@"finished with View did Load");
 }
 
 -(NSInteger)tableView:(UITableView *) tableView numberOfRowsInSection:(NSInteger)section {
@@ -93,11 +97,6 @@
     [super didReceiveMemoryWarning];
   
     // Dispose of any resources that can be recreated.
-}
--(void)refresh:(UIRefreshControl *)refreshControl {
-    [self.tableView reloadData];
-    [refreshControl endRefreshing];
-
 }
 
 @end

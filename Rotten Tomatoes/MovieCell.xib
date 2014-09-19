@@ -31,6 +31,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                 </subviews>
+                <color key="backgroundColor" red="0.61807914402173914" green="0.61807914402173914" blue="0.61807914402173914" alpha="1" colorSpace="calibratedRGB"/>
             </tableViewCellContentView>
             <connections>
                 <outlet property="posterView" destination="ay9-pW-5Tz" id="3zS-Qf-GgD"/>
